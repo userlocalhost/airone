@@ -65,7 +65,6 @@ export default function WebhookForm({ entityId }) {
   const [webhookId, setWebhookId] = React.useState(0);
 
   const handleOpenModal = (event, item) => {
-    console.log(item);
     setOpen(true);
     setWebhookURL(item ? item.url : "");
     setWebhookLabel(item ? item.label : "");
