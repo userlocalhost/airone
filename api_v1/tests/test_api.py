@@ -1029,7 +1029,7 @@ class APITest(AironeViewTest):
         "entry.tasks.notify_update_entry.delay",
         mock.Mock(side_effect=tasks.notify_update_entry),
     )
-    def test_notify_event_of_updating_entry(self):
+    def test_notify_event_of_updating_entry_without_changing(self):
         user = self.guest_login()
         entity = Entity.objects.create(name="Entity", created_user=user)
         entry = Entry.objects.create(name="entry", schema=entity, created_user=user)
@@ -1040,8 +1040,10 @@ class APITest(AironeViewTest):
 
         # check notification event was invoked
         entry = Entry.objects.get(id=resp.json()["result"])
-        job_notify = Job.objects.get(target=entry, operation=JobOperation.NOTIFY_UPDATE_ENTRY.value)
-        self.assertEqual(job_notify.status, Job.STATUS["DONE"])
+        self.assertIsNone(Job.objects.filter(target=entry, operation=JobOperation.NOTIFY_UPDATE_ENTRY.value).exists())
+
+        #job_notify = Job.objects.get(target=entry, operation=JobOperation.NOTIFY_UPDATE_ENTRY.value)
+        #self.assertEqual(job_notify.status, Job.STATUS["DONE"])
 
     @mock.patch("entry.tasks.notify_entry_update", mock.Mock(return_value=mock.Mock()))
     @mock.patch(
