@@ -51,7 +51,7 @@ export const EntryListCard: FC<Props> = ({ entityId, entry, setToggle }) => {
             component={Link}
             to={entryDetailsPath(entityId, entry.id)}
           >
-            <EntryName variant="h6">{entry.name}</EntryName>
+            <EntryName variant="h6" title={entry.name}>{entry.name}</EntryName>
           </CardActionArea>
         }
         action={
